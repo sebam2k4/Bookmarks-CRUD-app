@@ -2,8 +2,15 @@ from flask import Flask, render_template, request
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 import pymongo
+import json
 
 app = Flask(__name__)
+
+# MongoDB info stored in constants
+MONGODB_HOST = 'localhost'
+MONGODB_PORT = 27017
+DBS_NAME = 'client-database'
+COLLECTION_NAME = 'webpage_data'
 
 # Flask routes:
 @app. route('/', methods=['GET', 'POST'])
