@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Wordcount</title>
+    <title>Filterable List</title>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <style>
       .container {
@@ -14,6 +15,7 @@
   <body>
     <div class="container">
       <h1>Filterable Coding Resources</h1>
+      <p>Note: include http:// or https:// for your url.</p>
       <form role="form" method='POST' action='/'>
         <div class="form-group">
           <input type="text" name="url" class="form-control" id="url-box" placeholder="Enter URL..." style="max-width: 300px;" autofocus required>
@@ -21,8 +23,16 @@
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
       <br>
+      <h4>Result:</h4>
+      {% for result in results %}
+        <p>title: {{ result['title'] }}</p>
+        <p>description: {{ result['description'] }}</p>
+        <p>url: {{ result['url'] }}</p>
+      {% endfor %}
+      <br>
+      <h4>Errors:</h4>
       {% for error in errors %}
-        <h4>{{ error }}</h4>
+        <p>{{ error }}</p>
       {% endfor %}
     </div>
     <script src="//code.jquery.com/jquery-2.2.1.min.js"></script>
