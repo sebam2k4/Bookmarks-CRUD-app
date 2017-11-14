@@ -28,7 +28,7 @@ def index():
             errors.append(error)
             return render_template('index.html', errors = errors)
 
-        # after successful url read:
+        # after successful url read, scrape urls for data:
         if html_text:
             soup = BeautifulSoup(html_text, "lxml")
             site_title = soup.title.string
@@ -75,7 +75,7 @@ def index():
                 print error
                 errors.append(error)
                 return render_template('index.html', errors = errors)
-    return render_template('index.html', errors=errors, results=results, success = success)
+    return render_template('index.html', errors=errors, results=results)
 
 @app.route("/data")
 def webpage_data():
