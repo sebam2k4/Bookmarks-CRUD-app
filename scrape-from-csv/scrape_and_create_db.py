@@ -1,26 +1,41 @@
-from bs4 import BeautifulSoup
+import csv
 from urllib2 import urlopen
+from bs4 import BeautifulSoup
 import pymongo
+import sys
 
-# scrape for data, connecto to MongoDB, create db, create, collection, and
-# instert to collection. Need to seperat this and create update db function.
+'''
+Creates initial MongoDb database with collection name
+scrape for data, connecto to MongoDB, create db, create, collection, and
+insert to collection.
+'''
+
+MONGODB_HOST = 'localhost'
+MONGODB_PORT = 27017
+DBS_NAME = 'test'
+COLLECTION_NAME = 'test_collection'
+CSV_FILE_NAME = 'urls.csv'
+
+# open csv file and return the row
+def readCsvFile(filename):
+    try:
+        with open(filename) as csvDataFile:
+            csvReader = csv.reader(csvDataFile)
+            for row in csvReader:
+                return row
+    except IOError as e:
+        print 'Error reading file: %s found' % e
+        print 'exiting program...'
+        sys.exit()
+
 #Connect to MongoDB
 def mongo_connect():
     try:
-        conn = pymongo.MongoClient()
+        conn = pymongo.MongoClient(MONGODB_HOST, MONGODB_PORT)
         print "Mongo is connected!"
         return conn
-    except pymongo.errors.ConnectionFailure, e:
+    except pymongo.errors.ConnectionFailure as e:
         print "Could not connect to MongoDB: %s" % e
-
-
-# List of url to be scraped for data
-# Use local csv file for full list
-MY_URLS = ["https://www.codeinstitute.net/",
-                "http://www.sebastiankulig.com",
-                "https://www.crummy.com/software/BeautifulSoup/bs4/doc/",
-                "https://gmail.com",
-                "https://square.github.io/intro-to-d3/"]
 
 # Parse html of webpage and find title and description and store in a dictionary
 def get_data(urls):
@@ -42,9 +57,13 @@ def get_data(urls):
         data_array.append(data)
     return data_array
 
-scraped_data = get_data(MY_URLS)
+my_urls = readCsvFile(CSV_FILE_NAME)
+
+scraped_data = get_data(my_urls)
+
+# Insert data to MongoDB
 conn = mongo_connect() #connect to MongoDB
-db = conn['webpage-data'] # db name
-coll = db.webpage_data # db collectinon name
+db = conn[DBS_NAME] # db name
+coll = db[COLLECTION_NAME] # db collectinon name
 coll.drop()  # remove the collection to avoid duplicates when testing
 coll.insert(scraped_data) # insert scraped data to db
