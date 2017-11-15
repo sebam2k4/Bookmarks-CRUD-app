@@ -25,11 +25,15 @@ function loadData() {
         var output = '';
 
         for (var i in data) {
-        output += '<ul>' +
-        '<li>Title: ' + data[i].title + '</li>' +
-        '<li>Description: ' + data[i].description + '</li>' +
-        '<li>URL: ' + data[i].url + '</li>' +
-        '</ul>';
+        output += '<a class="card" target="_blank" href="' + data[i].url + '">' +
+            '<div class="panel panel-primary">' +
+            '<div class="panel-heading"><h4>' + data[i].title + '</h4></div>' +
+            '<div class="panel-body">' +
+            '<p>' + data[i].description + '</p>' +
+            '<p>url: ' + data[i].url + '</p>' +
+            '</div>' +
+            '</div>' +
+            '</a>';
         }
         document.getElementById('output').innerHTML = output;
     } else if(this.status == 404) {
