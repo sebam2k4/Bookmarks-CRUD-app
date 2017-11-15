@@ -13,8 +13,12 @@ a.card:hover {
     text-decoration: none;
 }
 a.card .panel {
-
     transition: .3s;
+}
+.card-buttons button{
+    margin-bottom: 10px;
+    z-index: 100;
+    display: block;
 }
 a.card .panel:hover {
     -webkit-box-shadow: 0px 0px 43px -7px rgba(55,102,122,1);
