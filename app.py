@@ -16,7 +16,7 @@ COLLECTION_NAME = 'webpage_data'
 @app. route('/', methods=['GET', 'POST'])
 def index():
     errors = []
-    results = []
+    #results = []
     if request.method == "POST":
         # get url that the user has entered
         try:
@@ -39,10 +39,8 @@ def index():
                 'description': site_description['content'] if site_description else "No description given",
                 'title': site_title if site_title else "No title given"
             }
-            # append scraped data to results list
-            results.append(data)
-            #print data['url']
-            #print results[0]['title']
+            # append scraped data to results list/ don't really need atm
+            #results.append(data)
 
             def mongo_connect():
                 try:
@@ -75,7 +73,7 @@ def index():
                 print error
                 errors.append(error)
                 return render_template('index.html', errors = errors)
-    return render_template('index.html', errors=errors, results=results)
+    return render_template('index.html', errors=errors)
 
 @app.route("/data")
 def webpage_data():
