@@ -6,7 +6,7 @@
   <p>Note: include http:// or https:// for your url.</p>
   <form role="form" method='POST' action='/'>
     <div class="form-group">
-      <input type="text" name="url" class="form-control" id="url-box" placeholder="Enter URL..." style="max-width: 300px;" autofocus required>
+      <input type="text" name="add-card" class="form-control" id="add-card" placeholder="Enter URL..." style="max-width: 300px;" autofocus required>
     </div>
     <button type="submit" class="btn btn-primary btn-lg">Add url</button>
   </form>
@@ -19,12 +19,17 @@
       <strong>Success! </strong>{{success}}
     </div>
     {% endif %}
-    {% if errors %}
-    {% for error in errors %}
+    {% if results['error'] %}
+    {% for result in results['error'] %}
     <div class="alert alert-danger" role="alert">
-        <strong>Error! </strong>{{error}}
+        <strong>Error! </strong>{{result}}
     </div>
     {% endfor %}
+    {% endif %}
+    {% if results['success'] %}
+    <div class="alert alert-success" role="alert">
+        <strong>Success! </strong>{{results['success']}}
+    </div>
     {% endif %}
   </div>
 </div>
