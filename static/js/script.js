@@ -40,14 +40,17 @@ function loadData() {
                             '</a>' +
                         '</div>' +
                         '<div class="card-buttons col-xs-2 col-sm-1">' +
-                            '<button type="button" class="btn btn-default" id="remove-card" aria-label="Left Align" title="remove">' +
-                                '<span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>' +
-                            '</button>' +
+                            '<form role="form" method="POST" action="/">' +
+                                '<button type="submit" name="remove-card" class="btn btn-default" id="remove-card" aria-label="Left Align" title="remove" value="' + data[i].url + '">' +
+                                    '<span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>' +
+                                '</button>' +
+                            '</form>' +
                             '<button type="button" class="btn btn-default" id="edit-card" aria-label="Left Align" title="edit">' +
                                 '<span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span>' +
                             '</button>' +
                         '</div>' +
                     '</div>';
+
         }
         document.getElementById('output').innerHTML = output;
     } else if(this.status == 404) {

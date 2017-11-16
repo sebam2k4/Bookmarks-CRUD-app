@@ -68,17 +68,53 @@ def add_url(url):
             errors.append(error)
             return {'error': errors}
 
+def remove_url(url):
+    errors = []
+    def mongo_connect():
+        try:
+            connection = pymongo.MongoClient('localhost', 27017)
+            print "Mongo is connected!"
+            return connection
+        except pymongo.errors.ConnectionFailure, e:
+            error = "Could not connect to MongoDB: %s" % e
+            print error
+            errors.append(error)
+            return {'error': errors}
+
+    # insert data to database
+    try:
+        connection = mongo_connect() #connect to MongoDB
+        db = connection['client-database'] # db name
+        collection = db.webpage_data # db collectinon name
+        # check if document exist
+
+        collection.delete_one({"url": { "$eq": url }}) # delete db document for which 'url' equals give url
+        success = "Removed Successfully!"
+        return {'success': success}
+
+    except:
+        error = "Unable to remove from database due to unrecognized error."
+        print error
+        errors.append(error)
+        return {'error': errors}
+
 # Flask routes:
 @app. route('/', methods=['GET', 'POST'])
 def index():
     results = []
     # get url that the user has entered
     # Add url from form input name='url'
-    if request.method == "POST" and request.form['add-card']:
-        url = request.form['add-card']
-        results = add_url(url)
-        print results
-    # else if request.method == "POST" and request.form['remove-card']:
+    #if request.method == "POST" and request.form['add-card']:
+    #    url = request.form['add-card']
+    #    results = add_url(url)
+    
+    if request.method == "POST":
+        if request.form.get('remove-card'):
+            url = request.form.get('remove-card')
+            results = remove_url(url)
+        elif request.form.get('add-card'):
+            url = request.form.get('add-card')
+            results = add_url(url)
     return render_template('index.html', results = results)
 
 @app.route("/data")
