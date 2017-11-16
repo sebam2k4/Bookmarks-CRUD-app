@@ -21,20 +21,20 @@ function loadData() {
     xhr.onload = function() {
     if(this.status == 200) {
         var data = JSON.parse(this.response);  //need to parse to object
-        console.log(data)
+        var reversed_data = data.reverse();
         var output = '';
 
-        for (var i in data) {
+        for (var i in reversed_data) {
         output += '<div class="row">' +
                         '<div class="card-container col-xs-10 col-sm-11">' +
-                            '<a class="card" target="_blank" href="' + data[i].url + '">' +
+                            '<a class="card" target="_blank" href="' + reversed_data[i].url + '">' +
                                 '<div class="panel panel-primary">' +
                                     '<div class="panel-heading">' +
-                                        '<h4>' + data[i].title + '</h4>' +
+                                        '<h4>' + reversed_data[i].title + '</h4>' +
                                     '</div>' +
                                     '<div class="panel-body">' +
-                                        '<p>' + data[i].description + '</p>' +
-                                        '<p>url: ' + data[i].url + '</p>' +
+                                        '<p>' + reversed_data[i].description + '</p>' +
+                                        '<p>url: ' + reversed_data[i].url + '</p>' +
                                     '</div>' +
                                 '</div>' +
                             '</a>' +
