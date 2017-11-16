@@ -14,9 +14,12 @@ function showRecords(error, client_dtabase) {
 
 // document.getElementById('showRecords').addEventListener('click', loadData);
 
+// use click events on button instead of button type="submit" to avoid page reload
+// Will need a GET to load the initial data on document ready.
+// Then will probably need two requests for buttons. POST - to modify json and db & GET to reload the data ?
 function loadData() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'data', true);
+    xhr.open('GET', 'webpage_data', true);
     
     xhr.onload = function() {
     if(this.status == 200) {
@@ -41,11 +44,11 @@ function loadData() {
                         '</div>' +
                         '<div class="card-buttons col-xs-2 col-sm-1">' +
                             '<form role="form" method="POST" action="/">' +
-                                '<button type="submit" name="remove-card" class="btn btn-default" id="remove-card" aria-label="Left Align" title="remove" value="' + data[i].url + '">' +
+                                '<button type="submit" name="remove-card" class="btn btn-default" id="removeCard" aria-label="Left Align" title="remove" value="' + data[i].url + '">' +
                                     '<span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                                 '</button>' +
                             '</form>' +
-                            '<button type="button" class="btn btn-default" id="edit-card" aria-label="Left Align" title="edit">' +
+                            '<button type="button" class="btn btn-default" id="editCard" aria-label="Left Align" title="edit">' +
                                 '<span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span>' +
                             '</button>' +
                         '</div>' +
