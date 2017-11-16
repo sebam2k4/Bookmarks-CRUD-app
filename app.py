@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, json
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 import pymongo
-import json
 
 app = Flask(__name__)
 
@@ -12,7 +11,17 @@ MONGODB_PORT = 27017
 DBS_NAME = 'client-database'
 COLLECTION_NAME = 'webpage_data'
 
-
+def mongo_connect():
+    errors = []
+    try:
+        connection = pymongo.MongoClient('localhost', 27017)
+        print "Mongo is connected!"
+        return connection
+    except pymongo.errors.ConnectionFailure, e:
+        error = "Could not connect to MongoDB: %s" % e
+        print error
+        errors.append(error)
+        return {'error': errors}
 
 def add_url(url):
     errors = []
@@ -35,17 +44,6 @@ def add_url(url):
             'description': site_description['content'] if site_description else "No description given",
             'title': site_title if site_title else "No title given"
         }
-
-        def mongo_connect():
-            try:
-                connection = pymongo.MongoClient('localhost', 27017)
-                print "Mongo is connected!"
-                return connection
-            except pymongo.errors.ConnectionFailure, e:
-                error = "Could not connect to MongoDB: %s" % e
-                print error
-                errors.append(error)
-                return {'error': errors}
         
         # insert data to database
         try:
@@ -70,17 +68,6 @@ def add_url(url):
 
 def remove_url(url):
     errors = []
-    def mongo_connect():
-        try:
-            connection = pymongo.MongoClient('localhost', 27017)
-            print "Mongo is connected!"
-            return connection
-        except pymongo.errors.ConnectionFailure, e:
-            error = "Could not connect to MongoDB: %s" % e
-            print error
-            errors.append(error)
-            return {'error': errors}
-
     # insert data to database
     try:
         connection = mongo_connect() #connect to MongoDB
@@ -117,7 +104,7 @@ def index():
             results = add_url(url)
     return render_template('index.html', results = results)
 
-@app.route("/data")
+@app.route("/webpage_data", methods=['GET', 'POST'])
 def webpage_data():
     """
     A Flask view to serve project data from
