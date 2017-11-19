@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, json
+from flask import Flask, render_template, request, json, jsonify, redirect
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 import pymongo
@@ -54,6 +54,7 @@ def add_url(url):
             if collection.find_one({"url": url}) < 0:
                 collection.save(data) # insert scraped data to db
                 success = "Record Successfully Added!"
+                print success
                 return {'success': success}
             else:
                 error = "Record already exists in database!"
@@ -77,6 +78,7 @@ def remove_url(url):
 
         collection.delete_one({"url": { "$eq": url }}) # delete db document for which 'url' equals give url
         success = "Removed Successfully!"
+        print success
         return {'success': success}
 
     except:
@@ -86,23 +88,27 @@ def remove_url(url):
         return {'error': errors}
 
 # Flask routes:
-@app. route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    return render_template('index.html')
+
+@app.route('/add_card', methods=['POST'])
+def addCard():
     results = []
-    # get url that the user has entered
-    # Add url from form input name='url'
-    #if request.method == "POST" and request.form['add-card']:
-    #    url = request.form['add-card']
-    #    results = add_url(url)
-    
-    if request.method == "POST":
-        if request.form.get('remove-card'):
-            url = request.form.get('remove-card')
-            results = remove_url(url)
-        elif request.form.get('add-card'):
-            url = request.form.get('add-card')
-            results = add_url(url)
-    return render_template('index.html', results = results)
+    input_url = request.form.get('add-card')  # use the input's name attribute
+    print "input: %s" % input_url
+    results = add_url(input_url)
+    # How do i get the erros as results displayed in index? /?
+    return jsonify(results=results)
+
+@app.route('/remove_card', methods=['POST', 'GET'])
+def removeCard():
+    results = []
+    input_url = request.form.get('remove-card')
+    print input_url
+    results = remove_url(input_url)
+    # need to figure out delegation to make this async
+    return jsonify(results=results)
 
 @app.route("/webpage_data", methods=['GET', 'POST'])
 def webpage_data():
@@ -127,6 +133,7 @@ def webpage_data():
         webpage_data = collection.find(projection=FIELDS, limit=250)
         # Convert projects to a list in a JSON object and return the JSON data
         return json.dumps(list(webpage_data))
+
 
 if __name__ == '__main__':
     app.run(debug='true')
