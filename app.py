@@ -23,7 +23,7 @@ def mongo_connect():
         errors.append(error)
         return {'error': errors}
 
-def add_url(url):
+def add_db_document(url):
     errors = []
     try:
         html_text = urlopen(url).read()
@@ -67,7 +67,7 @@ def add_url(url):
             errors.append(error)
             return {'error': errors}
 
-def remove_url(url):
+def remove_db_document(url):
     errors = []
     # insert data to database
     try:
@@ -76,7 +76,7 @@ def remove_url(url):
         collection = db.webpage_data # db collectinon name
         # check if document exist
 
-        collection.delete_one({"url": { "$eq": url }}) # delete db document for which 'url' equals give url
+        collection.delete_one({"url": { "$eq": url }}) # delete db document for which 'url' equals given url
         success = "Removed Successfully!"
         print success
         return {'success': success}
@@ -88,7 +88,7 @@ def remove_url(url):
         return {'error': errors}
 
 # Flask routes:
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/',)
 def index():
     return render_template('index.html')
 
@@ -98,7 +98,7 @@ def addCard():
     # get form input data from jquery ajax request
     input_url = request.form.get('add-card')
     print "input: %s" % input_url
-    results = add_url(input_url)
+    results = add_db_document(input_url)
     return jsonify(results=results)
 
 @app.route('/remove_card', methods=['POST'])
@@ -107,10 +107,10 @@ def removeCard():
     # get the json data from jquery ajax request
     input_url = request.json
     print input_url
-    results = remove_url(input_url)
+    results = remove_db_document(input_url)
     return jsonify(results=results)
 
-@app.route("/webpage_data", methods=['GET', 'POST'])
+@app.route("/webpage_data", methods=['GET'])
 def webpage_data():
     """
     A Flask view to serve project data from
@@ -133,7 +133,6 @@ def webpage_data():
         webpage_data = collection.find(projection=FIELDS, limit=250)
         # Convert projects to a list in a JSON object and return the JSON data
         return json.dumps(list(webpage_data))
-        content_type="application/json"
 
 
 if __name__ == '__main__':
