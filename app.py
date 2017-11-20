@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, json, jsonify, redirect
+from flask import Flask, render_template, request, json, jsonify
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 import pymongo
@@ -48,7 +48,7 @@ def add_url(url):
         # insert data to database
         try:
             connection = mongo_connect() #connect to MongoDB
-            db = connection['client-database'] # db name
+            db = connection[DBS_NAME] # db name
             collection = db.webpage_data # db collectinon name
             # add record to collection if it doesn't already exist
             if collection.find_one({"url": url}) < 0:
@@ -95,19 +95,19 @@ def index():
 @app.route('/add_card', methods=['POST'])
 def addCard():
     results = []
-    input_url = request.form.get('add-card')  # use the input's name attribute
+    # get form input data from jquery ajax request
+    input_url = request.form.get('add-card')
     print "input: %s" % input_url
     results = add_url(input_url)
-    # How do i get the erros as results displayed in index? /?
     return jsonify(results=results)
 
-@app.route('/remove_card', methods=['POST', 'GET'])
+@app.route('/remove_card', methods=['POST'])
 def removeCard():
     results = []
-    input_url = request.form.get('remove-card')
+    # get the json data from jquery ajax request
+    input_url = request.json
     print input_url
     results = remove_url(input_url)
-    # need to figure out delegation to make this async
     return jsonify(results=results)
 
 @app.route("/webpage_data", methods=['GET', 'POST'])
@@ -129,10 +129,11 @@ def webpage_data():
         # Define which collection we wish to access
         collection = connection[DBS_NAME][COLLECTION_NAME]
         # Retrieve a result set only with the fields defined in FIELDS
-        # and limit the results to 250
+        # and limit the output results to 250
         webpage_data = collection.find(projection=FIELDS, limit=250)
         # Convert projects to a list in a JSON object and return the JSON data
         return json.dumps(list(webpage_data))
+        content_type="application/json"
 
 
 if __name__ == '__main__':
