@@ -4,6 +4,9 @@
 .about-btn {
     margin-left: 2rem;
 }
+.jumbotron {
+    padding-top: 60px;
+}
 a.card {
     text-decoration: none;
     color: #333
@@ -26,8 +29,21 @@ a.card .panel:hover {
     box-shadow: 0px 0px 43px -7px rgba(55,102,122,1);
     transition: .1s;
 }
+a.card .url {
+    overflow-wrap: break-word;  /* break long words, paths, code snippets, etc */
+    font-style: italic;
+}
 .footer {
     padding: 4rem 0;
     margin-top: 4rem;
     background-color:#f7f7f7;
+}
+
+.footer p span {
+    font-weight: 700;
+}
+
+.footer p span:hover {
+    font-weight: 700;
+    color: black;
 }
