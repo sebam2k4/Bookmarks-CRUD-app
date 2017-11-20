@@ -1,16 +1,16 @@
 $(document).ready(function() {
     
     $('#addUrlForm').on("submit", function(){
-        // prevent page reload (default behaviour)
+        // prevent page reload on form submit (default behaviour)
         event.preventDefault();
-        //capture url from user input
+        // capture url from user input
         var input_url = $('#inputUrl').val();
         $.ajax({
             url: '/add_card',
             data: $('form').serialize(),
             type: 'POST',
             success: function(response){
-                // output server error message:
+                // output server error or success message:
                 showMessage(response);
             },
             error: function(error){
@@ -23,19 +23,20 @@ $(document).ready(function() {
         });
     });
 
-    // .on method with delegated events needed for click event to work on future elements
+    // .on method with delegated event needed for click event to work on future elements
     // Needs to be used on static parent element
-    $('#cards').on("click", '#removeUrlBtn', function(){
+    $('#cards').on("click", '#removeCardBtn', function(){
         console.log("Button pressed!")
         // capture value of clicked button (url)
         var input_url = $(this).val();
         console.log(input_url)
         $.ajax({
             url: '/remove_card',
-            data: JSON.stringify(input_url, null, '\t'), //this returns nothing back to Flask...? why?!?
+            data: JSON.stringify(input_url),
             contentType: 'application/json;charset=UTF-8',
             type: 'POST',
             success: function(responseText){
+                // output server error or success message:
                 showMessage(responseText)
             },
             error: function(error){
@@ -69,13 +70,13 @@ $(document).ready(function() {
                                             '</div>' +
                                             '<div class="panel-body">' +
                                                 '<p>' + reversed_data[i].description + '</p>' +
-                                                '<p>url: ' + reversed_data[i].url + '</p>' +
+                                                '<p class="text-muted small url">' + reversed_data[i].url + '</p>' +
                                             '</div>' +
                                         '</div>' +
                                     '</a>' +
                                 '</div>' +
                                 '<div class="card-buttons col-xs-2 col-sm-1">' +
-                                    '<button type="button" name="remove-card" class="btn btn-default" id="removeUrlBtn" aria-label="Left Align" title="remove" value="' + reversed_data[i].url + '">' +
+                                    '<button type="button" name="remove-card" class="btn btn-default" id="removeCardBtn" aria-label="Left Align" title="remove" value="' + reversed_data[i].url + '">' +
                                         '<span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                                     '</button>' +
                                     '<button type="button" class="btn btn-default" id="editCard" aria-label="Left Align" title="edit">' +
