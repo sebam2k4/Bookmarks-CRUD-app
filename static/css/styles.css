@@ -39,11 +39,11 @@ a.card .url {
     background-color:#f7f7f7;
 }
 
-.footer p span {
+.footer p a {
     font-weight: 700;
 }
 
-.footer p span:hover {
+.footer p a:hover {
     font-weight: 700;
     color: black;
 }
