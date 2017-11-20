@@ -4,25 +4,21 @@
   <div class="container">
   <h1>Filterable Coding Resources</h1>
   <p>Note: include http:// or https:// for your url.</p>
-  <form role="form" method='POST' action=''>
+  <form role="form" method='POST' action='' id="addUrlForm">
     <div class="form-group">
       <input type="text" name="add-card" class="form-control" id="inputUrl" placeholder="Enter URL..." style="max-width: 300px;" autofocus required>
     </div>
-    <button type="button" class="btn btn-primary btn-lg" id="addUrl">Add url</button>
+    <button type="submit" class="btn btn-primary btn-lg" id="addUrlBtn">Add url</button>
   </form>
   </div>
 </div>
 
 <!-- SERVER messages -->
-<div class="container">
-  <div class="server-message">
-
-  </div>
+<div class="container" id="server-message">
 </div>
 
 <!-- CARDS -->
-<div class="container">
-  <div id="output"></div>
+<div class="container" id="cards">
 </div>
 
 <!-- EDIT MODAL-->
