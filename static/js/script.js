@@ -1,5 +1,6 @@
 $(document).ready(function() {
     
+    // ADD CARD
     $('#addUrlForm').on("submit", function(){
         // prevent page reload on form submit (default behaviour)
         event.preventDefault();
@@ -23,10 +24,10 @@ $(document).ready(function() {
         });
     });
 
+    // REMOVE CARD
     // .on method with delegated event needed for click event to work on future elements
     // Needs to be used on static parent element
-    $('#cards').on("click", '#removeCardBtn', function(){
-        console.log("Button pressed!")
+    $('#cards').on("click", '#removeCardBtn', function(){S
         // capture value of clicked button (url)
         var input_url = $(this).val();
         console.log(input_url)
@@ -50,7 +51,7 @@ $(document).ready(function() {
     });
 
 
-    // load data from server api
+    // LOAD DATA from server api
     function loadData() {
         $.ajax({
             url: '/webpage_data',
@@ -59,7 +60,7 @@ $(document).ready(function() {
                 var data = JSON.parse(response);  //need to parse to object
                 var reversed_data = data.reverse();
                 var output = '';
-        
+                // create a card for each document in db
                 for (var i in reversed_data) {
                 output +=   '<div class="row">' +
                                 '<div class="card-container col-xs-10 col-sm-11">' +
