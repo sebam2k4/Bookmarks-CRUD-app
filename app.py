@@ -17,8 +17,8 @@ def mongo_connect():
         connection = pymongo.MongoClient('localhost', 27017)
         print "Mongo is connected!"
         return connection
-    except pymongo.errors.ConnectionFailure, e:
-        error = "Could not connect to MongoDB: %s" % e
+    except:
+        error = "Could not connect to MongoDB"
         print error
         errors.append(error)
         return {'error': errors}
@@ -67,6 +67,27 @@ def add_db_document(url):
             errors.append(error)
             return {'error': errors}
 
+def update_db_document(url, title, description):
+    errors = []
+    # update data to database
+    try:
+        connection = mongo_connect() #connect to MongoDB
+        db = connection['client-database'] # db name
+        collection = db.webpage_data # db collectinon name
+        # check if document exist
+
+        collection.update_one({"url": { "$eq": url }},{ '$set': {'title': title, 'description': description}  }) # update db document for which 'url' equals given url
+        success = "Updated Successfully!"
+        print success
+        return {'success': success}
+
+    except:
+        error = "Unable to update due to unrecognized error."
+        print error
+        errors.append(error)
+        return {'error': errors}
+
+
 def remove_db_document(url):
     errors = []
     # insert data to database
@@ -101,6 +122,19 @@ def addCard():
     results = add_db_document(input_url)
     return jsonify(results=results)
 
+@app.route('/update_card', methods=['POST'])
+def updateCard():
+    results = []
+    # get the json data from jquery ajax request
+    input_url = request.json['url']
+    title = request.json['title']
+    description = request.json['description']
+    print input_url
+    print title
+    print description
+    results = update_db_document(input_url, title, description)
+    return jsonify(results=results)
+
 @app.route('/remove_card', methods=['POST'])
 def removeCard():
     results = []
@@ -133,6 +167,7 @@ def webpage_data():
         webpage_data = collection.find(projection=FIELDS, limit=250)
         # Convert projects to a list in a JSON object and return the JSON data
         return json.dumps(list(webpage_data))
+        
 
 
 if __name__ == '__main__':
