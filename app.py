@@ -41,8 +41,8 @@ def add_db_document(url):
         # need to create new dicionary for each new item/iteration to be able to append to list later
         data = {
             'url': url,
-            'description': site_description['content'] if site_description else "No description given",
-            'title': site_title if site_title else "No title given"
+            'description': site_description['content'] if site_description else "No description found",
+            'title': site_title if site_title else "No title found"
         }
         
         # insert data to database
@@ -53,16 +53,16 @@ def add_db_document(url):
             # add record to collection if it doesn't already exist
             if collection.find_one({"url": url}) < 0:
                 collection.save(data) # insert scraped data to db
-                success = "Record Successfully Added!"
+                success = "Card added to database Successfully!"
                 print success
                 return {'success': success}
             else:
-                error = "Record already exists in database!"
+                error = "Card already exists in database!"
                 print error
                 errors.append(error)
                 return {'error': errors}
         except:
-            error = "Unable to add record to database due to unrecognized error."
+            error = "Unable to add card to database due to unrecognized error."
             print error
             errors.append(error)
             return {'error': errors}
@@ -77,12 +77,12 @@ def update_db_document(url, title, description):
         # check if document exist
 
         collection.update_one({"url": { "$eq": url }},{ '$set': {'title': title, 'description': description}  }) # update db document for which 'url' equals given url
-        success = "Updated Successfully!"
+        success = "Card Updated Successfully!"
         print success
         return {'success': success}
 
     except:
-        error = "Unable to update due to unrecognized error."
+        error = "Unable to update card due to unrecognized error."
         print error
         errors.append(error)
         return {'error': errors}
@@ -103,7 +103,7 @@ def remove_db_document(url):
         return {'success': success}
 
     except:
-        error = "Unable to remove from database due to unrecognized error."
+        error = "Unable to remove card from database due to unrecognized error."
         print error
         errors.append(error)
         return {'error': errors}
