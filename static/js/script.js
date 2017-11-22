@@ -20,6 +20,10 @@ $(document).ready(function() {
         // activate card's editable content and add borders
         for (var i = 0; i < card_list.length; i++) {
             if (card_list[i].getAttribute("data-identifier") == value) {
+                // clear any active editable content first
+                $(card_list).find('.edit-h4').removeClass('active').attr('contenteditable','false');
+                $(card_list).find('.edit-p').removeClass('active').attr('contenteditable','false');
+                // activate editable content for corresponding card
                 $(card_list[i]).find('.edit-h4').addClass('active').attr('contenteditable','true');
                 $(card_list[i]).find('.edit-p').addClass('active').attr('contenteditable','true');
             }
