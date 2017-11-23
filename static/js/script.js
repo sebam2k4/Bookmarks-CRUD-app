@@ -85,7 +85,7 @@ $(document).ready(function() {
             url: '/remove_card',
             data: JSON.stringify(input_url),
             contentType: 'application/json;charset=UTF-8',
-            type: 'POST',
+            type: 'DELETE',
             success: function(responseText){
                 // output server error or success message:
                 showServerMessage(responseText)
@@ -204,7 +204,7 @@ $(document).ready(function() {
             url: '/update_card',
             data: JSON.stringify({'url': input_url, 'title':title_text, 'description':description_text}),
             contentType: 'application/json;charset=UTF-8',
-            type: 'POST',
+            type: 'PUT',
             success: function(response){
                 // output server error or success message:
                 showServerMessage(response);

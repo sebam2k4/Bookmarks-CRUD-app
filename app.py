@@ -122,7 +122,7 @@ def addCard():
     results = add_db_document(input_url)
     return jsonify(results=results)
 
-@app.route('/update_card', methods=['POST'])
+@app.route('/update_card', methods=['PUT'])
 def updateCard():
     results = []
     # get the json data from jquery ajax request
@@ -135,7 +135,7 @@ def updateCard():
     results = update_db_document(input_url, title, description)
     return jsonify(results=results)
 
-@app.route('/remove_card', methods=['POST'])
+@app.route('/remove_card', methods=['DELETE'])
 def removeCard():
     results = []
     # get the json data from jquery ajax request
