@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    //load data on page load
+    loadData();
 
     // LOAD DATA from server api
     function loadData() {
@@ -7,6 +9,7 @@ $(document).ready(function() {
             type: 'GET',
             success: function(response){
                 var data = JSON.parse(response);  //need to parse to object
+                // reverse the order of the data so newest card appears on top
                 var reversed_data = data.reverse();
                 var output = '';
                 // create a card for each document in db
@@ -99,7 +102,7 @@ $(document).ready(function() {
 
 
     // EDIT CARD
-    // clean this up - looks really messy and code could possibly be improved.
+    // NOTE TO SELF: clean this up - looks really messy and code could possibly be improved.
     // Read up jquery docs and investigate some ways to imporove and simplify
     $('#cards').on("click", '.editCardBtn', function(){
         // disable links to prevent opening the card's link while in edit mode
@@ -117,26 +120,24 @@ $(document).ready(function() {
         // hide buttons for other cards when in card edit mode
         $('.editCardBtn').not(this).closest('.card-buttons').toggle();
 
+        // get 2 seperate lists for all titles and descriptions of all cards
+        var all_titles = $(card_list).find('.edit-h4');
+        var all_descriptions = $(card_list).find('.edit-p');
         // initialize variables
-        var all_titles = '';
-        var all_descriptions = '';
         var title = '';
         var description = '';
-
         // iterate through every card
         //var original_title_text = '';
         for (var i = 0; i < card_list.length; i++) {
-            // get 2 seperate lists for all titles and descriptions of all cards
-            all_titles = $(card_list).find('.edit-h4');
-            all_descriptions = $(card_list).find('.edit-p');
             title = $(card_list[i]).find('.edit-h4');
             description = $(card_list[i]).find('.edit-p');
             var original_title_text = title.text(); //how to compare this to new text?
 
-            // Match edit button with its corresponding card
-            if (card_list.eq(i).data('identifier') == value) { // card_list[0].getAttribute("data-identifier");
+            // Match edit button with its corresponding card (matching cards based on card's data attr and button's value)
+            if (card_list.eq(i).data('identifier') == value) {       // card_list[0].getAttribute("data-identifier");
                 
-                // cancel card edit on 2nd edit button click
+                // cancel card edit on 2nd button click
+                // NOTE TO SELF: figure out how to revert edited text back to original on cancel
                 if (title.attr('contenteditable')) {
                     // disable active editable content
                     title.removeClass('active').removeAttr('contenteditable','true');
@@ -145,8 +146,6 @@ $(document).ready(function() {
                     $('a').off('click');
                     // hide save button
                     $('.saveCardBtn').hide();
-                    console.log(original_title_text)
-                    title = original_title_text;
                     // bring back buttons for other cards
                     $(".card-buttons").show();
                 } else {
@@ -168,7 +167,7 @@ $(document).ready(function() {
     });
 
     // SAVE EDITED CARD
-    // clean this up - looks really messy and code could possibly be improved.
+    // NOTE TO SELF: clean this up - looks really messy and code could possibly be improved.
     // Read up jquery docs and investigate some ways to imporove and simplify
     $('#cards').on("click", '.saveCardBtn', function(){
         // remove click event to re-enable card links after save
@@ -239,11 +238,7 @@ $(document).ready(function() {
             output +=   '<div class="alert alert-success" role="alert">' +
                             '<strong>Yey! </strong>' + success +
                         '</div>'
-
-            }
+        }
         $('#server-message').html(output).hide().fadeIn(300);
     };
-
-//load data on initial page load
-loadData();
 });
