@@ -193,8 +193,8 @@ $(document).ready(function() {
             // Match save button with its corresponding card
             if (card_list.eq(i).data('identifier') == value) {
                 // Save coresponding card's edited content and remove borders & disable editable content.
-                title.removeClass('active').attr('contenteditable','false');
-                description.removeClass('active').attr('contenteditable','false');
+                title.removeClass('active').removeAttr('contenteditable','true');
+                description.removeClass('active').removeAttr('contenteditable','true');
                 title_text = title.text();
                 description_text = description.text();
             }
