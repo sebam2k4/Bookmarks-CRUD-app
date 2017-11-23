@@ -2,8 +2,8 @@
 {% block content %}
 <div class="jumbotron">
   <div class="container">
-  <h1>Filterable Coding Resources</h1>
-  <p>Note: include http:// or https:// for your url.</p>
+  <h1>Coding Resources</h1>
+  <p class="text-muted">include http:// or https:// for your url.</p>
   <form role="form" method='POST' action='' id="addUrlForm">
     <div class="form-group">
       <input type="text" name="add-card" class="form-control" id="inputUrl" placeholder="Enter URL..." style="max-width: 300px;" autofocus required>
@@ -21,22 +21,4 @@
 <div class="container" id="cards">
 </div>
 
-<!-- EDIT MODAL-->
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Edit</h4>
-        </div>
-        <div class="modal-body">
-          <p>body&hellip;</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
 {% endblock %}
