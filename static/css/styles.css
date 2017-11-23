@@ -58,3 +58,10 @@ button.btn.btn-default.saveCardBtn {
     font-weight: 700;
     color: black;
 }
+
+@media screen and (max-width: 420px) {
+    .card-buttons button{
+        position: relative;
+        right: 20px;
+    }
+}
