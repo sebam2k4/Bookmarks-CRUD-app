@@ -1,6 +1,6 @@
 ## Bookmark CRUD App
 
-This is a bookmarking app for storing your urls in a card format with the webpage's title and description. The user has the ability to open the link in a new tab. Also, any card can have it's title and description then edited, or the card can be removed from the list.
+This is a bookmarking app for storing useful urls in a card format with the webpage's title and description. The user has the ability to open the link in a new tab. Also, any card can have it's title and description then edited, or the card can be removed from the list.
 
 The app uses async HTTP requests to communicate with the server for adding, removing, and saving of cards as well as scraping the webpage's information for its title and description and then saving the information in a database.
 
@@ -22,7 +22,7 @@ Beautiful Soup 4
 - Security?
 
 ### Features to Add:
-- tags and filtering? for starters could just do text input field search
+- tags and filtering - for starters could just do text input field search
 - set a limit to amount of documents that can be stored in db
 - Find a way to prevent or minimize inappropriate urls from being stored in db and displayed in front-end
 - User accounts and an instance of coding resource bookmarks collection.
