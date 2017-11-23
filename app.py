@@ -2,19 +2,16 @@ from flask import Flask, render_template, request, json, jsonify
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 import pymongo
+from settings import MONGODB_HOST, MONGODB_PORT, DBS_NAME, COLLECTION_NAME
 
 app = Flask(__name__)
 
-# MongoDB info stored in constants
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
-DBS_NAME = 'client-database'
-COLLECTION_NAME = 'webpage_data'
+
 
 def mongo_connect():
     errors = []
     try:
-        connection = pymongo.MongoClient('localhost', 27017)
+        connection = pymongo.MongoClient(MONGODB_HOST, MONGODB_PORT)
         print "Mongo is connected!"
         return connection
     except:
@@ -49,7 +46,7 @@ def add_db_document(url):
         try:
             connection = mongo_connect() #connect to MongoDB
             db = connection[DBS_NAME] # db name
-            collection = db.webpage_data # db collectinon name
+            collection = db[COLLECTION_NAME] # db collectinon name
             # add record to collection if it doesn't already exist
             if collection.find_one({"url": url}) < 0:
                 collection.save(data) # insert scraped data to db
@@ -72,8 +69,8 @@ def update_db_document(url, title, description):
     # update data to database
     try:
         connection = mongo_connect() #connect to MongoDB
-        db = connection['client-database'] # db name
-        collection = db.webpage_data # db collectinon name
+        db = connection[DBS_NAME] # db name
+        collection = db[COLLECTION_NAME] # db collectinon name
         # check if document exist
 
         collection.update_one({"url": { "$eq": url }},{ '$set': {'title': title, 'description': description}  }) # update db document for which 'url' equals given url
@@ -93,8 +90,8 @@ def remove_db_document(url):
     # insert data to database
     try:
         connection = mongo_connect() #connect to MongoDB
-        db = connection['client-database'] # db name
-        collection = db.webpage_data # db collectinon name
+        db = connection[DBS_NAME] # db name
+        collection = db[COLLECTION_NAME] # db collectinon name
         # check if document exist
 
         collection.delete_one({"url": { "$eq": url }}) # delete db document for which 'url' equals given url
