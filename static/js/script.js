@@ -38,6 +38,7 @@ $(document).ready(function() {
                                 '</div>' +
                             '</div>';
                 }
+                // add all the cards to index.html
                 $('#cards').html(output);
             },
             error: function(error){
@@ -135,16 +136,18 @@ $(document).ready(function() {
             // Match edit button with its corresponding card
             if (card_list.eq(i).data('identifier') == value) { // card_list[0].getAttribute("data-identifier");
                 
-                // activate editable content for corresponding card
+                // cancel card edit on 2nd edit button click
                 if (title.attr('contenteditable')) {
-                    // disable active editable content on 2nd button click
+                    // disable active editable content
                     title.removeClass('active').removeAttr('contenteditable','true');
                     description.removeClass('active').removeAttr('contenteditable','true');
-                    // remove click event to re-enable card links after save
+                    // remove click event to re-enable card links after edit cancel
                     $('a').off('click');
+                    // hide save button
                     $('.saveCardBtn').hide();
                     console.log(original_title_text)
                     title = original_title_text;
+                    // bring back buttons for other cards
                     $(".card-buttons").show();
                 } else {
                     // show save button
@@ -216,6 +219,8 @@ $(document).ready(function() {
             // loadData();
             // hide save button after save
             $('.saveCardBtn').fadeOut(150);
+            // bring back buttons for other cards after save
+            $(".card-buttons").show();
         });
     });
 
