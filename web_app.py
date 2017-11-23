@@ -2,19 +2,19 @@ from flask import Flask, render_template, request, json, jsonify
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 import pymongo
-from settings import MONGODB_HOST, MONGODB_PORT, DBS_NAME, COLLECTION_NAME
 import os
 
 app = Flask(__name__)
 
 MONGO_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
-DBS_NAME = os.getenv('MONGO_DB_NAME', 'cards'
+DBS_NAME = os.getenv('MONGO_DB_NAME', 'cards')
+COLLECTION_NAME = 'cards'
 
 
 def mongo_connect():
     errors = []
     try:
-        connection = pymongo.MongoClient(MONGODB_HOST, MONGODB_PORT)
+        connection = pymongo.MongoClient(MONGO_URI)
         print "Mongo is connected!"
         return connection
     except:
