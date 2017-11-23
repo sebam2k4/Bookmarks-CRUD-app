@@ -153,8 +153,8 @@ $(document).ready(function() {
                     // show save button
                     $(this).next().fadeIn(300);
                     // clear any active editable content first
-                    all_titles.removeClass('active').removeAttr('contenteditable','false');
-                    all_descriptions.removeClass('active').removeAttr('contenteditable','false');
+                    all_titles.removeClass('active').removeAttr('contenteditable','true');
+                    all_descriptions.removeClass('active').removeAttr('contenteditable','true');
                     // activate editable content for corresponding card
                     title.addClass('active').attr('contenteditable','true');
                     description.addClass('active').attr('contenteditable','true');
