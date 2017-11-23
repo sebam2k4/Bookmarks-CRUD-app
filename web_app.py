@@ -3,9 +3,12 @@ from bs4 import BeautifulSoup
 from urllib2 import urlopen
 import pymongo
 from settings import MONGODB_HOST, MONGODB_PORT, DBS_NAME, COLLECTION_NAME
+import os
 
 app = Flask(__name__)
 
+MONGO_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
+DBS_NAME = os.getenv('MONGO_DB_NAME', 'cards'
 
 
 def mongo_connect():
@@ -156,7 +159,7 @@ def webpage_data():
 
     # Open a connection to MongoDB using a 'with' statement such that the
     # connection will be closed as soon as we exit the 'with' statement
-    with pymongo.MongoClient(MONGODB_HOST, MONGODB_PORT) as connection:
+    with pymongo.MongoClient(MONGO_URI) as connection:
         # Define which collection we wish to access
         collection = connection[DBS_NAME][COLLECTION_NAME]
         # Retrieve a result set only with the fields defined in FIELDS
