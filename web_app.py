@@ -6,9 +6,10 @@ from settings import MONGODB_HOST, MONGODB_PORT, DBS_NAME, COLLECTION_NAME
 
 app = Flask(__name__)
 
-
-
 def mongo_connect():
+    '''
+    connect to MongoDb
+    '''
     errors = []
     try:
         connection = pymongo.MongoClient(MONGODB_HOST, MONGODB_PORT)
@@ -21,20 +22,29 @@ def mongo_connect():
         return {'error': errors}
 
 def add_db_document(url):
+    '''
+    Add a document to MongoDB
+    '''
     errors = []
     try:
+        # try to read the url input from view
         html_text = urlopen(url).read()
     except:
+        # return error if can't read the url
         error = "Unable to get URL. Make sure it's valid and try again."
         print error
         errors.append(error)
         return {'error': errors}
 
-    # after successful url read, scrape urls for data:
+    # after successful url read, scrape urls for data with Beautiful Soup:
     if html_text:
+        # use lxml for the soup
         soup = BeautifulSoup(html_text, "lxml")
+        # scrape the title of the webpage
         site_title = soup.title.string
+        # scrape the meta tags for attribute name="desscription" and get the description text
         site_description = soup.html.head.find("meta", attrs={"name":"description"})
+        # store the scraped text and the input url in a dict. if none found, indicate that with a default string
         # need to create new dicionary for each new item/iteration to be able to append to list later
         data = {
             'url': url,
@@ -42,18 +52,19 @@ def add_db_document(url):
             'title': site_title if site_title else "No title found"
         }
         
-        # insert data to database
+        # add the scraped data to MongoDB
         try:
             connection = mongo_connect() #connect to MongoDB
             db = connection[DBS_NAME] # db name
             collection = db[COLLECTION_NAME] # db collectinon name
-            # add record to collection if it doesn't already exist
+            # add document to db collection if it doesn't already exist
             if collection.find_one({"url": url}) < 0:
                 collection.save(data) # insert scraped data to db
                 success = "Card added to database Successfully!"
                 print success
                 return {'success': success}
             else:
+                # if document already exists, return error message
                 error = "Card already exists in database!"
                 print error
                 errors.append(error)
@@ -65,15 +76,17 @@ def add_db_document(url):
             return {'error': errors}
 
 def update_db_document(url, title, description):
+    '''
+    Update a document in MongoDB
+    '''
     errors = []
     # update data to database
     try:
         connection = mongo_connect() #connect to MongoDB
         db = connection[DBS_NAME] # db name
-        collection = db[COLLECTION_NAME] # db collectinon name
-        # check if document exist
-
-        collection.update_one({"url": { "$eq": url }},{ '$set': {'title': title, 'description': description}  }) # update db document for which 'url' equals given url
+        collection = db[COLLECTION_NAME] # collectinon name
+        # update db document with new title and description for which 'url' equals given url
+        collection.update_one({"url":{"$eq": url}}, {'$set':{'title': title, 'description': description}})
         success = "Card Updated Successfully!"
         print success
         return {'success': success}
@@ -86,15 +99,16 @@ def update_db_document(url, title, description):
 
 
 def remove_db_document(url):
+    '''
+    Remove a document from MongoDB
+    '''
     errors = []
-    # insert data to database
     try:
         connection = mongo_connect() #connect to MongoDB
         db = connection[DBS_NAME] # db name
-        collection = db[COLLECTION_NAME] # db collectinon name
-        # check if document exist
-
-        collection.delete_one({"url": { "$eq": url }}) # delete db document for which 'url' equals given url
+        collection = db[COLLECTION_NAME] # collectinon name
+        # delete db document for which 'url' equals given url from view
+        collection.delete_one({"url": { "$eq": url }})
         success = "Removed Successfully!"
         print success
         return {'success': success}
@@ -105,50 +119,65 @@ def remove_db_document(url):
         errors.append(error)
         return {'error': errors}
 
+
 # Flask routes:
 @app.route('/',)
 def index():
+    """
+    A Flask view to render the index.html
+    """
     return render_template('index.html')
 
 @app.route('/add_card', methods=['POST'])
-def addCard():
+def add_card():
+    """
+    A Flask view to handle adding a document to MongoDB.
+    """
     results = []
-    # get form input data from jquery ajax request
+    # get form input data from view's jquery ajax request
     input_url = request.form.get('add-card')
     print "input: %s" % input_url
+    # try to add the doc to db and populate the results list with any success or error messsges.
     results = add_db_document(input_url)
     return jsonify(results=results)
 
 @app.route('/update_card', methods=['PUT'])
-def updateCard():
+def update_card():
+    """
+    A Flask view to handle updating existing document in MongoDB.
+    """
     results = []
-    # get the json data from jquery ajax request
+    # get json data from view's jquery ajax request
     input_url = request.json['url']
     title = request.json['title']
     description = request.json['description']
     print input_url
     print title
     print description
+    # try to update the db and populate the results list with any success or error messsges.
     results = update_db_document(input_url, title, description)
     return jsonify(results=results)
 
 @app.route('/remove_card', methods=['DELETE'])
-def removeCard():
+def remove_card():
+    """
+    A Flask view to handle removal of a document from MongoDB.
+    """
     results = []
-    # get the json data from jquery ajax request
+    # get json data from view's jquery ajax request
     input_url = request.json
     print input_url
+    # try to remove the doc from db and populate the results list with any success or error messsges.
     results = remove_db_document(input_url)
+    # return any success or error messages to display in view
     return jsonify(results=results)
 
 @app.route("/webpage_data", methods=['GET'])
 def webpage_data():
     """
-    A Flask view to serve project data from
-    MongoDB in JSON format.
+    A Flask view to serve project data from MongoDB in JSON format.
     """
-
-    # A constant (uppercase) that defines the record fields that we wish to retrieve
+    # A constant that defines the record fields that we wish to retrieve
     FIELDS = {
         '_id': False, 'url': True, 'title': True,
         'description': True
@@ -161,8 +190,8 @@ def webpage_data():
         collection = connection[DBS_NAME][COLLECTION_NAME]
         # Retrieve a result set only with the fields defined in FIELDS
         # and limit the output results to 250
-        webpage_data = collection.find(projection=FIELDS, limit=250)
-        # Convert projects to a list in a JSON object and return the JSON data
+        webpage_data = collection.find(projection=FIELDS, limit=35)
+        # serialize/convert Python list to JSON and return the JSON data
         return json.dumps(list(webpage_data))
         
 
