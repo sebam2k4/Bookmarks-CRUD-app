@@ -5,7 +5,7 @@
     margin-left: 2rem;
 }
 .jumbotron {
-    padding-top: 130px;
+    padding-top: 60px;
 }
 a.card {
     text-decoration: none;
@@ -58,8 +58,6 @@ button.btn.btn-default.saveCardBtn {
     font-weight: 700;
     color: black;
 }
-
-
 
 @media screen and (max-width: 420px) {
     .card-buttons button{
