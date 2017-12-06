@@ -247,6 +247,6 @@ $(document).ready(function() {
                             '<strong>Yey! </strong>' + success +
                         '</div>'
         }
-        $('#server-message').html(output).hide().fadeIn(300);
+        $('#serverMessage').html(output).hide().fadeIn(300);
     };
 });
