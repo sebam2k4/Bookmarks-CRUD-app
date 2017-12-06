@@ -5,7 +5,7 @@
     margin-left: 2rem;
 }
 .jumbotron {
-    padding-top: 130px;
+    padding-top: 100px;
 }
 a.card {
     text-decoration: none;
@@ -58,7 +58,11 @@ button.btn.btn-default.saveCardBtn {
     font-weight: 700;
     color: black;
 }
-
+.fixed-server-message {
+    position: fixed;
+    top: 50px;
+    width: 100%;
+}
 
 
 @media screen and (max-width: 420px) {
