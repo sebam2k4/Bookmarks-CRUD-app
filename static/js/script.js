@@ -228,7 +228,6 @@ $(document).ready(function() {
             $('.saveCardBtn').fadeOut(150);
             // bring back buttons for other cards after save
             $(".card-buttons").show();
-            $('.editCardBtn').children().removeClass('glyphicon-remove').addClass('glyphicon-pencil');
         });
     });
 
@@ -239,20 +238,15 @@ $(document).ready(function() {
         var errors = (response.results.error);
             for (var i in errors) {
             output +=   '<div class="alert alert-danger" role="alert">' +
-                            '<div class="container">' +
-                                '<strong>Error! </strong>' + errors[i] +
-                            '</div>' +
+                            '<strong>Error! </strong>' + errors[i] +
                         '</div>'
             }
         } else if (response.results.hasOwnProperty('success')) {
             var success = (response.results.success);
             output +=   '<div class="alert alert-success" role="alert">' +
-                            '<div class="container">' +
-                                '<strong>Yey! </strong>' + success +
-                            '</div>' +
+                            '<strong>Yey! </strong>' + success +
                         '</div>'
         }
         $('#serverMessage').html(output).hide().fadeIn(300);
-        $('#serverMessage').delay(4000).fadeOut(500);
     };
 });
