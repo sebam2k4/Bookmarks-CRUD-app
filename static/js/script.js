@@ -30,7 +30,7 @@ $(document).ready(function() {
                                 '</div>' +
                                 '<div class="card-buttons col-xs-2 col-sm-1">' +
                                     '<button type="button" name="remove-card" class="btn btn-default removeCardBtn"aria-label="Left Align" title="remove" value="' + reversed_data[i].url + '">' +
-                                        '<span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>' +
+                                        '<span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true"></span>' +
                                     '</button>' +
                                     '<button type="button" name="edit-card" class="btn btn-default editCardBtn" aria-label="Left Align" title="edit" value="' + reversed_data[i].url + '">' +
                                         '<span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span>' +
@@ -104,6 +104,9 @@ $(document).ready(function() {
     // EDIT CARD
     // NOTE TO SELF: clean this up - looks really messy and code could possibly be improved.
     // Read up jquery docs and investigate some ways to imporove and simplify
+
+    // try to use $(this).children('.class or #id, .class or 'id, etc).toggleClass() or other method to match buttons with cards or something else?
+
     $('#cards').on("click", '.editCardBtn', function(){
         // disable links to prevent opening the card's link while in edit mode
         $('a').on('click', function(element){
@@ -119,6 +122,7 @@ $(document).ready(function() {
         $('.saveCardBtn').hide();
         // hide buttons for other cards when in card edit mode
         $('.editCardBtn').not(this).closest('.card-buttons').toggle();
+        
 
         // get 2 seperate lists for all titles and descriptions of all cards
         var all_titles = $(card_list).find('.edit-h4');
@@ -139,6 +143,8 @@ $(document).ready(function() {
                 // cancel card edit on 2nd button click
                 // NOTE TO SELF: figure out how to revert edited text back to original on cancel
                 if (title.attr('contenteditable')) {
+                    // change button icon back to pencil
+                    $(this).children().removeClass('glyphicon-remove').addClass('glyphicon-pencil');
                     // disable active editable content
                     title.removeClass('active').removeAttr('contenteditable','true');
                     description.removeClass('active').removeAttr('contenteditable','true');
@@ -149,6 +155,8 @@ $(document).ready(function() {
                     // bring back buttons for other cards
                     $(".card-buttons").show();
                 } else {
+                    // change button icon to x for cancel
+                    $(this).children().removeClass('glyphicon-pencil').addClass('glyphicon-remove');
                     // show save button
                     $(this).next().fadeIn(300);
                     // clear any active editable content first
