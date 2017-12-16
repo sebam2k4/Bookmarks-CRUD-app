@@ -62,6 +62,7 @@ button.btn.btn-default.saveCardBtn {
     position: fixed;
     top: 50px;
     width: 100%;
+    z-index: 100;
 }
 
 
