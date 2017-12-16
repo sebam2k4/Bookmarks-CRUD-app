@@ -1,6 +1,9 @@
 $(document).ready(function() {
     //load data on page load
+    cards = [];
     loadData();
+
+    
 
     // LOAD DATA from server api
     function loadData() {
@@ -8,9 +11,10 @@ $(document).ready(function() {
             url: '/webpage_data',
             type: 'GET',
             success: function(response){
-                var data = JSON.parse(response);  //need to parse to object
+                cards = JSON.parse(response);  //need to parse to object
+                console.log(cards)
                 // reverse the order of the data so newest card appears on top
-                var reversed_data = data.reverse();
+                var reversed_data = cards.reverse();
                 var output = '';
                 // create a card for each document in db
                 for (var i in reversed_data) {
@@ -106,7 +110,8 @@ $(document).ready(function() {
     // Read up jquery docs and investigate some ways to imporove and simplify
 
     // try to use $(this).children('.class or #id, .class or 'id, etc).toggleClass() or other method to match buttons with cards or something else?
-
+    var original_title = '';
+    var original_description = '';
     $('#cards').on("click", '.editCardBtn', function(){
         // disable links to prevent opening the card's link while in edit mode
         $('a').on('click', function(element){
@@ -123,7 +128,6 @@ $(document).ready(function() {
         // hide buttons for other cards when in card edit mode
         $('.editCardBtn').not(this).closest('.card-buttons').toggle();
         
-
         // get 2 seperate lists for all titles and descriptions of all cards
         var all_titles = $(card_list).find('.edit-h4');
         var all_descriptions = $(card_list).find('.edit-p');
@@ -135,11 +139,9 @@ $(document).ready(function() {
         for (var i = 0; i < card_list.length; i++) {
             title = $(card_list[i]).find('.edit-h4');
             description = $(card_list[i]).find('.edit-p');
-            var original_title_text = title.text(); //how to compare this to new text?
-
             // Match edit button with its corresponding card (matching cards based on card's data attr and button's value)
             if (card_list.eq(i).data('identifier') == value) {       // card_list[0].getAttribute("data-identifier");
-                
+                var title_text = title.text();
                 // cancel card edit on 2nd button click
                 // NOTE TO SELF: figure out how to revert edited text back to original on cancel
                 if (title.attr('contenteditable')) {
@@ -154,7 +156,14 @@ $(document).ready(function() {
                     $('.saveCardBtn').hide();
                     // bring back buttons for other cards
                     $(".card-buttons").show();
+                    //revert title and description text on edit cancel
+                    title.text(original_title);
+                    description.text(original_description);
+                    console.log("back to original = " + title_text);
                 } else {
+                    // capture original title and description text
+                    original_title = title.text();
+                    original_description = description.text()
                     // change button icon to x for cancel
                     $(this).children().removeClass('glyphicon-pencil').addClass('glyphicon-remove');
                     // show save button
