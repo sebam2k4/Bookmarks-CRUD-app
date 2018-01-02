@@ -249,7 +249,7 @@ $(document).ready(function() {
             for (var i in errors) {
             output +=   '<div class="alert alert-danger" role="alert">' +
                             '<div class="container">' +
-                                '<strong>Error! </strong>' + errors[i] +
+                                '<strong>Error! </strong>Server Msg: ' + errors[i] +
                             '</div>' +
                         '</div>'
             }
@@ -257,7 +257,7 @@ $(document).ready(function() {
             var success = (response.results.success);
             output +=   '<div class="alert alert-success" role="alert">' +
                             '<div class="container">' +
-                                '<strong>Yey! </strong>' + success +
+                                '<strong>Yey! </strong>Server Msg: ' + success +
                             '</div>' +
                         '</div>'
         }
