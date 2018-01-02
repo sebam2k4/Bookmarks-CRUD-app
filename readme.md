@@ -31,6 +31,7 @@ Beautiful Soup 4
 - Read more about HTTP responses: GET, POST, PUT, DELETE
 - Add user accounts (login/registration) and feature a working example with no data persistance.
 - Use firebase for user accounts and bookmark storage
+- remove unnecessary http requests to reload data on 'card delete'
 
 ### Features to Add:
 - tags and filtering - for starters could just do text input field search
