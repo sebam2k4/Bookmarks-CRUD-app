@@ -18,12 +18,22 @@ Initial data was obtained and stored using my python webpage scraper available [
 - Delete Card
 
 ### Tech Used:
+Python 2.7
 Flask
 Urllib
 Pymongo
 jQuery 3.2.1
 Bootstrap 3.3.7
 Beautiful Soup 4
+
+## Setting the project up on your local machine
+1. download or clone the repository.
+2. create a virtual envitornment using `virtualenv` in the project's root folder.
+3. activate your virtual environment.
+4. run `pip install -r requirements.txt` from your command line to install all package dependencies.
+5. Make sure you have MongoDB installed and are running an instance of `mongod` locally using port 27017 (see settings.py)
+6. run `python web_app.py` from your command line to run the project on a local server.
+7. Navigate to http://127.0.0.1:5000 in your browser to view the project.
 
 ### ToDo:
 - look into jquery ajax error handling
@@ -32,6 +42,7 @@ Beautiful Soup 4
 - Add user accounts (login/registration) and feature a working example with no data persistance.
 - Use firebase for user accounts and bookmark storage
 - remove unnecessary http requests to reload data on 'card delete'
+- Add flash error message when not connected to MongoDB
 
 ### Features to Add:
 - tags and filtering - for starters could just do text input field search
