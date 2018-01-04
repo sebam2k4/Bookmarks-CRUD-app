@@ -1,4 +1,6 @@
 .vscode
-.venv-flask
+.venv
 *.pyc
 .backup
+
+node_modules

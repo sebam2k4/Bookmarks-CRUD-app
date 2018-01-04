@@ -144,6 +144,7 @@ def add_card():
     print "input: %s" % input_url
     # try to add the doc to db and populate the results list with any success or error messsges.
     results = add_db_document(input_url)
+    # return the result to the client
     return jsonify(results=results)
 
 @app.route('/update_card', methods=['PUT'])
@@ -161,6 +162,7 @@ def update_card():
     print description
     # try to update the db and populate the results list with any success or error messsges.
     results = update_db_document(input_url, title, description)
+    # return the result to the client
     return jsonify(results=results)
 
 @app.route('/remove_card', methods=['DELETE'])
@@ -174,7 +176,7 @@ def remove_card():
     print input_url
     # try to remove the doc from db and populate the results list with any success or error messsges.
     results = remove_db_document(input_url)
-    # return any success or error messages to display in view
+    # return the result to the client
     return jsonify(results=results)
 
 @app.route("/webpage_data", methods=['GET'])
