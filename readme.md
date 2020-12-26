@@ -1,3 +1,5 @@
+**Note: heroku mongoDB addon has been disabled/detached - need to find a new addon or change db**
+
 ## Bookmark CRUD App
 
 This is a bookmarking app for storing useful urls in a card format with the webpage's title and description. The user has the ability to open the link in a new tab. Also, any card can have its title and description edited, and the card can be removed from the list.
